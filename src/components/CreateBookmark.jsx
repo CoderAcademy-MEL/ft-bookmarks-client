@@ -27,6 +27,7 @@ class CreateBookmark extends React.Component {
   render() {
     return (
       <div className={styles.container}>
+        <h1>Create a bookmark</h1>
         <form onSubmit={this.onFormSubmit}>
           <label htmlFor="title">Title</label>
           <input
