@@ -8,6 +8,7 @@ class NavBar extends React.Component {
       <nav>
         <Link to="/">Home</Link>
         <Link to="/bookmarks">Bookmarks</Link>
+        <Link to="/bookmarks/create">Create Bookmark</Link>
       </nav>
     );
   }
