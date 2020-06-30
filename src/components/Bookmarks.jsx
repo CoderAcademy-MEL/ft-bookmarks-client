@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import moment from 'moment'
 
 class Bookmarks extends React.Component {
   // initial state
@@ -10,10 +12,17 @@ class Bookmarks extends React.Component {
     this.setState({ bookmarks: bookmarks });
   };
 
+  deleteBookmark = async (id) => {
+    await fetch(`http://localhost:3000/bookmarks/${id}`, {
+      method: "DELETE",
+    });
+    this.getBookmarks();
+  };
+
   renderBookmarks = () => {
     return this.state.bookmarks.map((bookmark, index) => {
       return (
-        <div key={index}>
+        <div key={index} className="bookmark">
           <h3>{bookmark.title}</h3>
           <p>{bookmark.description}</p>
           <span>
@@ -21,6 +30,11 @@ class Bookmarks extends React.Component {
               {bookmark.url}
             </a>
           </span>
+          <p>{moment(bookmark.created_at).startOf('minute').fromNow()}</p>
+          <div className="edit-delete-container">
+            <Link to={`/bookmarks/${bookmark.id}/edit`}>Edit</Link>
+            <span onClick={() => this.deleteBookmark(bookmark.id)}>Delete</span>
+          </div>
           <hr />
         </div>
       );
