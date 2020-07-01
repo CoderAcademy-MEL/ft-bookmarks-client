@@ -13,17 +13,18 @@ nav {
   border: 1px solid black;
 }
 
-nav a {
+nav a, nav span {
   text-decoration: none;
   color: crimson;
   margin: 0px 10px;
+  cursor: pointer;
 }
 
 .edit-delete-container {
   margin: 20px 0px;
 }
 
-.edit-delete-container a, span {
+.edit-delete-container a, .edit-delete-container span {
   margin-right: 10px;
   color: crimson;
   text-decoration: none;
@@ -32,4 +33,31 @@ nav a {
 
 .bookmark {
   padding: 10px;
+}
+
+.container {
+  max-width: 700px;
+  margin: 10px auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 10px 0px;
+}
+
+form input {
+  height: 30px;
+}
+
+form input[type=submit] {
+  margin: 20px 0px;
+}
+
+form textarea {
+  resize: none;
+  height: 100px;
 }
