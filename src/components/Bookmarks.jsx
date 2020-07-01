@@ -7,7 +7,7 @@ class Bookmarks extends React.Component {
   state = { bookmarks: [] };
 
   getBookmarks = async () => {
-    const response = await fetch("http://localhost:3000/bookmarks", {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
@@ -17,7 +17,7 @@ class Bookmarks extends React.Component {
   };
 
   deleteBookmark = async (id) => {
-    await fetch(`http://localhost:3000/bookmarks/${id}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "DELETE",
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`

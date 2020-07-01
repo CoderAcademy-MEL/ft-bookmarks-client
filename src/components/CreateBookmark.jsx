@@ -13,7 +13,7 @@ class CreateBookmark extends React.Component {
     const body = {
       bookmark: this.state
     }
-    await fetch("http://localhost:3000/bookmarks", {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -19,7 +19,7 @@ class EditBookmark extends React.Component {
   onFormSubmit = async (event) => {
     event.preventDefault();
     const { id, title, url, description } = this.state;
-    await fetch(`http://localhost:3000/bookmarks/${id}`, {
+    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -32,7 +32,7 @@ class EditBookmark extends React.Component {
 
   async componentDidMount() {
     const { id } = this.state;
-    const response = await fetch(`http://localhost:3000/bookmarks/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
