@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "../stylesheets/createBookmark.module.css";
 
 class EditBookmark extends React.Component {
   state = {
@@ -24,6 +23,7 @@ class EditBookmark extends React.Component {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify({ bookmark: { title, url, description } }),
     });
@@ -32,17 +32,20 @@ class EditBookmark extends React.Component {
 
   async componentDidMount() {
     const { id } = this.state;
-    const response = await fetch(`http://localhost:3000/bookmarks/${id}`);
+    const response = await fetch(`http://localhost:3000/bookmarks/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
     const { title, url, description } = await response.json();
     this.setState({ title, url, description, loading: false });
   }
 
   render() {
-    console.log(this.state);
     const { title, url, description, loading } = this.state;
     return (
       !loading && (
-        <div className={styles.container}>
+        <div className="container">
           <h1>Edit a bookmark</h1>
           <form onSubmit={this.onFormSubmit}>
             <label htmlFor="title">Title</label>

@@ -1,5 +1,4 @@
 import React from "react";
-import styles from "../stylesheets/createBookmark.module.css";
 
 class CreateBookmark extends React.Component {
   onInputChange = (event) => {
@@ -18,6 +17,7 @@ class CreateBookmark extends React.Component {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       },
       body: JSON.stringify(body),
     });
@@ -26,7 +26,7 @@ class CreateBookmark extends React.Component {
 
   render() {
     return (
-      <div className={styles.container}>
+      <div className="container">
         <h1>Create a bookmark</h1>
         <form onSubmit={this.onFormSubmit}>
           <label htmlFor="title">Title</label>
