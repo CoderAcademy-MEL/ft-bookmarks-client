@@ -1,4 +1,5 @@
 import React from "react";
+import { RandomContext } from "../store/random-context";
 
 class CreateBookmark extends React.Component {
   onInputChange = (event) => {
@@ -11,13 +12,13 @@ class CreateBookmark extends React.Component {
   onFormSubmit = async (event) => {
     event.preventDefault();
     const body = {
-      bookmark: this.state
-    }
+      bookmark: this.state,
+    };
     await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify(body),
     });
@@ -26,32 +27,39 @@ class CreateBookmark extends React.Component {
 
   render() {
     return (
-      <div className="container">
-        <h1>Create a bookmark</h1>
-        <form onSubmit={this.onFormSubmit}>
-          <label htmlFor="title">Title</label>
-          <input
-            type="text"
-            name="title"
-            id="title"
-            onChange={this.onInputChange}
-          />
-          <label htmlFor="url">Url</label>
-          <input
-            type="text"
-            name="url"
-            id="url"
-            onChange={this.onInputChange}
-          />
-          <label htmlFor="description">Description</label>
-          <textarea
-            name="description"
-            id="description"
-            onChange={this.onInputChange}
-          ></textarea>
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
+      <RandomContext.Consumer>
+        {(context) => {
+          console.log(context)
+          return (
+            <div className="container">
+              <h1 onClick={context.updateValue}>Create a bookmark</h1>
+              <form onSubmit={this.onFormSubmit}>
+                <label htmlFor="title">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  id="title"
+                  onChange={this.onInputChange}
+                />
+                <label htmlFor="url">Url</label>
+                <input
+                  type="text"
+                  name="url"
+                  id="url"
+                  onChange={this.onInputChange}
+                />
+                <label htmlFor="description">Description</label>
+                <textarea
+                  name="description"
+                  id="description"
+                  onChange={this.onInputChange}
+                ></textarea>
+                <input type="submit" value="Submit" />
+              </form>
+            </div>
+          );
+        }}
+      </RandomContext.Consumer>
     );
   }
 }
