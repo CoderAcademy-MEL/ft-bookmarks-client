@@ -1,12 +1,15 @@
 import React from "react";
+import { BookmarksContext } from "../store/bookmarks-context";
 
 class EditBookmark extends React.Component {
+  static contextType = BookmarksContext;
+
   state = {
     title: "",
     url: "",
     description: "",
     loading: true,
-    id: this.props.match.params.id,
+    id: Number(this.props.match.params.id),
   };
 
   onInputChange = (event) => {
@@ -19,25 +22,23 @@ class EditBookmark extends React.Component {
   onFormSubmit = async (event) => {
     event.preventDefault();
     const { id, title, url, description } = this.state;
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
+    this.context.dispatch("update", { title, url, description, id });
+    this.props.history.push("/bookmarks");
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({ bookmark: { title, url, description } }),
     });
-    this.props.history.push("/bookmarks");
   };
 
   async componentDidMount() {
-    const { id } = this.state;
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    const { title, url, description } = await response.json();
+    const foundBookmark = this.context.bookmarks.find(
+      (bookmark) => bookmark.id === this.state.id
+    );
+    const { title, url, description } = foundBookmark;
     this.setState({ title, url, description, loading: false });
   }
 
