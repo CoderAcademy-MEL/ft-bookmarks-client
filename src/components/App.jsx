@@ -10,22 +10,20 @@ import EditBookmark from "./EditBookmark";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from "./Login";
 import SignUp from "./SignUp";
-import { RandomContext } from "../store/random-context";
+import { BookmarksContext, dispatch } from "../store/bookmarks-context";
 
 class App extends React.Component {
-
-  updateValue = () => {
-    this.setState((state) => {
-      return {value: state.value += 1}
-    })
-  } 
-
-  state = { value: 1, updateValue: this.updateValue };
+  state = {
+    bookmarks: [],
+    dispatch: dispatch.bind(this),
+    loading: true,
+    auth: false,
+  };
 
   render() {
     return (
       <>
-        <RandomContext.Provider value={this.state}>
+        <BookmarksContext.Provider value={this.state}>
           <Navbar />
           <Switch>
             <ProtectedRoute
@@ -44,7 +42,7 @@ class App extends React.Component {
             <Route exact path="/" component={Home} />
             <Route component={NoMatch} />
           </Switch>
-        </RandomContext.Provider>
+        </BookmarksContext.Provider>
       </>
     );
   }
