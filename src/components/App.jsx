@@ -15,9 +15,7 @@ import { BookmarksContext, dispatch } from "../store/bookmarks-context";
 class App extends React.Component {
   state = {
     bookmarks: [],
-    dispatch: dispatch.bind(this),
-    loading: true,
-    auth: false,
+    dispatch: dispatch.bind(this)
   };
 
   render() {
