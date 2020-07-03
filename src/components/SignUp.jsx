@@ -1,6 +1,8 @@
 import React from "react";
+import { BookmarksContext } from "../store/bookmarks-context";
 
 class SignUp extends React.Component {
+  static contextType = BookmarksContext;
   state = { email: "", password: "" };
 
   onInputChange = (event) => {
@@ -14,29 +16,36 @@ class SignUp extends React.Component {
     event.preventDefault();
     const { email, password } = this.state;
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/sign-up`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ user: { email, password }}),
-      });
-      if (response.status >= 400) {
-        throw new Error("incorrect credentials");
-      } else {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/sign-up`,
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ auth: { email, password }}),
-        })
-        const { jwt } = await response.json()
+          body: JSON.stringify({ user: { email, password } }),
+        }
+      );
+      if (response.status >= 400) {
+        throw new Error("incorrect credentials");
+      } else {
+        const response = await fetch(
+          `${process.env.REACT_APP_BACKEND_URL}/login`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ auth: { email, password } }),
+          }
+        );
+        const { jwt } = await response.json();
         localStorage.setItem("token", jwt);
+        this.context.dispatch("login");
         this.props.history.push("/bookmarks");
       }
     } catch (err) {
-      console.error(err.message)
+      console.error(err.message);
     }
   };
 
