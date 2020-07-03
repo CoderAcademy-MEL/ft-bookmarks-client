@@ -1,9 +1,11 @@
 // Navbar.jsx
-import React from "react";
+import React, { useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { BookmarksContext } from "../store/bookmarks-context";
 
 const NavBar = () => {
   const history = useHistory();
+  const context = useContext(BookmarksContext)
 
   return (
     <nav>
@@ -15,6 +17,7 @@ const NavBar = () => {
       <span
         onClick={() => {
           localStorage.removeItem("token");
+          context.dispatch("logout")
           history.push("/login");
         }}
       >
