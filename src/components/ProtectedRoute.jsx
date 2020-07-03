@@ -6,30 +6,35 @@ class ProtectedRoute extends React.Component {
   static contextType = BookmarksContext;
 
   async componentDidMount() {
-    if (!this.context.auth) {
-      this.context.dispatch();
-      return;
-    }
+    if (!this.context.auth) return;
     try {
-      const response = await fetch(
-        `${process.env.REACT_APP_BACKEND_URL}/bookmarks`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.status >= 400) {
-        throw new Error("not authorized");
-      } else {
-        const { jwt, bookmarks } = await response.json();
-        localStorage.setItem("token", jwt);
-        this.context.dispatch("populate", bookmarks);
-      }
+      const response = await this.fetchBookmarks();
+      this.handleError(response.status);
+      this.setTokenAndPopulateBookmarksContext(response);
     } catch (err) {
       this.context.dispatch();
     }
   }
+
+  handleError = (status) => {
+    if (status >= 400) {
+      throw new Error("Incorrect credentials");
+    }
+  };
+
+  setTokenAndPopulateBookmarksContext = async (response) => {
+    const { jwt, bookmarks } = await response.json();
+    localStorage.setItem("token", jwt);
+    this.context.dispatch("populate", bookmarks);
+  };
+
+  fetchBookmarks = async () => {
+    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+  };
 
   render() {
     const { loading, auth } = this.context;
