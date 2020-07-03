@@ -1,6 +1,8 @@
 import React from "react";
+import { BookmarksContext } from "../store/bookmarks-context";
 
 class Login extends React.Component {
+  static contextType = BookmarksContext;
   state = { email: "", password: "", errMessage: "" };
 
   onInputChange = (event) => {
@@ -17,18 +19,22 @@ class Login extends React.Component {
       auth: { email, password },
     };
     try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_BACKEND_URL}/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
       if (response.status >= 400) {
         throw new Error("Incorrect credentials");
       } else {
         const { jwt } = await response.json();
         localStorage.setItem("token", jwt);
+        this.context.dispatch("login");
         this.props.history.push("/bookmarks");
       }
     } catch (err) {
