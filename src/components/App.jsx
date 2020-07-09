@@ -10,6 +10,7 @@ import EditBookmark from "./EditBookmark";
 import ProtectedRoute from "./ProtectedRoute";
 import Login from './Login'
 import SignUp from './SignUp'
+import Profile from './Profile'
 import SiteLayout from '../layouts/SiteLayout'
 import { BookmarksContext, dispatch } from '../context/bookmarks-context'
 
@@ -19,12 +20,13 @@ class App extends React.Component {
   render() {
     return (
       <BookmarksContext.Provider value={this.state}>
-        <Navbar />
+        <Route component={Navbar} />
         <SiteLayout>
           <Switch>
             <ProtectedRoute exact path="/bookmarks/:id/edit" component={EditBookmark} />
             <ProtectedRoute exact path="/bookmarks/create" component={CreateBookmark} />
             <ProtectedRoute exact path="/bookmarks" component={Bookmarks} />
+            <ProtectedRoute exact path="/profile" component={Profile} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/sign-up" component={SignUp} />
             <Route exact path="/" component={Home} />
