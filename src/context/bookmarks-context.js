@@ -37,6 +37,9 @@ function dispatch(action, value) {
     case "logout": 
       this.setState({ currentUser: false, bookmarks: [] })
       break;
+    case "current user":
+      this.setState({ currentUser: value })
+      break;
     default: 
       console.log("in bookmarks")
   }
