@@ -41,7 +41,7 @@ class Login extends React.Component {
   render() {
     const { email, password, errMessage } = this.state;
     return (
-      <div className="container">
+      <>
         <h1>Login</h1>
         {errMessage && <span style={{ color: "red" }}>{errMessage}</span>}
         <form onSubmit={this.onFormSubmit}>
@@ -63,7 +63,7 @@ class Login extends React.Component {
           />
           <input type="submit" value="Submit" />
         </form>
-      </div>
+      </>
     );
   }
 }
