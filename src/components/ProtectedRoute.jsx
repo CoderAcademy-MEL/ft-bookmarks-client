@@ -48,17 +48,19 @@ class ProtectedRoute extends React.Component {
   }
 
   render() {
-    const { loading, auth } = this.context;
-    if (auth && !loading) {
-      return (
-        <Route
-          exact={this.props.exact}
-          path={this.props.path}
-          component={this.props.component}
-        />
-      );
-    } else if (!auth) {
+    const { loading, auth } = this.state;
+    if (!loading && !auth) {
       return <Redirect to="/login" />;
+    } else {
+      return (
+        !loading && (
+          <Route
+            exact={this.props.exact}
+            path={this.props.path}
+            component={this.props.component}
+          />
+        )
+      );
     }
   }
 }
