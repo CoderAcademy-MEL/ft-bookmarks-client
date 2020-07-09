@@ -41,7 +41,6 @@ class SignUp extends React.Component {
         );
         const { jwt } = await response.json();
         localStorage.setItem("token", jwt);
-        this.context.dispatch("login");
         this.props.history.push("/bookmarks");
       }
     } catch (err) {
