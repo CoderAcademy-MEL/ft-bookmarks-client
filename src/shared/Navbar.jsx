@@ -1,22 +1,22 @@
-// Navbar.jsx
-import React, { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import React from 'react'
 import { BookmarksContext } from "../context/bookmarks-context";
 import LoggedInNavbar from './LoggedInNavbar'
 import LoggedOutNavbar from './LoggedOutNavbar'
 
-const NavBar = () => {
-  const history = useHistory();
-  const context = useContext(BookmarksContext)
-  return (
-    <nav>
-      {context.currentUser ? (
-        <LoggedInNavbar history={history} context={context} />
-      ) : (
-        <LoggedOutNavbar />
-      )}
-    </nav>
-  );
+class NavBar extends React.Component {
+  static contextType = BookmarksContext
+
+  render() {
+    return (
+      <nav>
+        {this.context.currentUser || localStorage.getItem("auth") ? (
+          <LoggedInNavbar history={this.props.history} context={this.context} />
+        ) : (
+          <LoggedOutNavbar />
+        )}
+      </nav>
+    )
+  }
 };
 
 export default NavBar;
