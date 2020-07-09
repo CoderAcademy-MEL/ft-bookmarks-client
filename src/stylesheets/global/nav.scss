@@ -1,0 +1,47 @@
+nav {
+  padding: 20px;
+  border: 1px solid black;
+  display: flex;
+}
+
+.logged-in-links {
+  display: flex;
+  align-items: center;
+  width: 75%;
+}
+
+.welcome-user {
+  width: 25%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.welcome-user span {
+  font-size: 15px;
+}
+
+nav a, nav #logout {
+  text-decoration: none;
+  color: crimson;
+  margin: 0px 10px;
+  cursor: pointer;
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 700px) {
+  .logged-in-links a, nav #logout {
+    font-size: 13px;
+    margin: 0px 5px;
+  }
+
+  .logged-out-links {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .welcome-user span {
+    font-size: 11px;
+  }
+}
