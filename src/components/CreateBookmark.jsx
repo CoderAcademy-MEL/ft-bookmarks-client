@@ -1,6 +1,8 @@
 import React from "react";
+import { BookmarksContext } from '../context/bookmarks-context'
 
 class CreateBookmark extends React.Component {
+  static contextType = BookmarksContext
   onInputChange = (event) => {
     const key = event.target.id;
     this.setState({
@@ -13,7 +15,7 @@ class CreateBookmark extends React.Component {
     const body = {
       bookmark: this.state
     }
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
+    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,12 +23,14 @@ class CreateBookmark extends React.Component {
       },
       body: JSON.stringify(body),
     });
+    const newBookmark = await response.json()
+    this.context.dispatch("add", newBookmark) 
     this.props.history.push("/bookmarks");
   };
 
   render() {
     return (
-      <div className="container">
+      <>
         <h1>Create a bookmark</h1>
         <form onSubmit={this.onFormSubmit}>
           <label htmlFor="title">Title</label>
@@ -51,7 +55,7 @@ class CreateBookmark extends React.Component {
           ></textarea>
           <input type="submit" value="Submit" />
         </form>
-      </div>
+      </>
     );
   }
 }
