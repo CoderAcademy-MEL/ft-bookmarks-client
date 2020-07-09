@@ -47,26 +47,6 @@ class ProtectedRoute extends React.Component {
     }
   }
 
-  handleError = (status) => {
-    if (status >= 400) {
-      throw new Error("Incorrect credentials");
-    }
-  };
-
-  setTokenAndPopulateBookmarksContext = async (response) => {
-    const { jwt, bookmarks } = await response.json();
-    localStorage.setItem("token", jwt);
-    this.context.dispatch("populate", bookmarks);
-  };
-
-  fetchBookmarks = async () => {
-    return await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    });
-  };
-
   render() {
     const { loading, auth } = this.context;
     if (auth && !loading) {

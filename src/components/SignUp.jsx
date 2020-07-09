@@ -1,5 +1,5 @@
 import React from "react";
-import { BookmarksContext } from "../store/bookmarks-context";
+import { BookmarksContext } from "../context/bookmarks-context";
 
 class SignUp extends React.Component {
   static contextType = BookmarksContext;
