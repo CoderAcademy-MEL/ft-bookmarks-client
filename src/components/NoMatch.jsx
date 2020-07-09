@@ -1,9 +1,13 @@
-// NoMatch.jsx
 import React from "react";
 
 class NoMatch extends React.Component {
   render() {
-    return <h1>no match!</h1>;
+    return (
+      <div>
+        <h1>404</h1>
+        <p>This is the wrong web page!</p>
+      </div>
+    )
   }
 }
 
