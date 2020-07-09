@@ -1,9 +1,8 @@
 import React from "react";
-import { BookmarksContext } from "../store/bookmarks-context";
+import { BookmarksContext } from '../context/bookmarks-context'
 
 class EditBookmark extends React.Component {
-  static contextType = BookmarksContext;
-
+  static contextType = BookmarksContext
   state = {
     title: "",
     url: "",
@@ -21,9 +20,16 @@ class EditBookmark extends React.Component {
 
   onFormSubmit = async (event) => {
     event.preventDefault();
-    const { id, title, url, description } = this.state;
-    this.context.dispatch("update", { title, url, description, id });
-    this.props.history.push("/bookmarks");
+    const { id, title, url, description, created_at, user_id } = this.state;
+    this.context.dispatch("update", {
+      title,
+      url,
+      description,
+      id,
+      created_at,
+      user_id,
+      updated_at: new Date(),
+    });
     fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "PUT",
       headers: {
@@ -34,19 +40,18 @@ class EditBookmark extends React.Component {
     });
   };
 
-  async componentDidMount() {
-    const foundBookmark = this.context.bookmarks.find(
-      (bookmark) => bookmark.id === this.state.id
-    );
-    const { title, url, description } = foundBookmark;
-    this.setState({ title, url, description, loading: false });
+  componentDidMount() {
+    const foundBookmark = this.context.bookmarks.find((bookmark) => {
+      return bookmark.id === this.state.id
+    })
+    this.setState({ ...foundBookmark, loading: false });
   }
 
   render() {
     const { title, url, description, loading } = this.state;
     return (
       !loading && (
-        <div className="container">
+        <>
           <h1>Edit a bookmark</h1>
           <form onSubmit={this.onFormSubmit}>
             <label htmlFor="title">Title</label>
@@ -74,7 +79,7 @@ class EditBookmark extends React.Component {
             ></textarea>
             <input type="submit" value="Submit" />
           </form>
-        </div>
+        </>
       )
     );
   }

@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import moment from 'moment'
-import { BookmarksContext } from '../store/bookmarks-context'
+import { BookmarksContext } from '../context/bookmarks-context'
+import NoBookMarks from "./NoBookmarks";
 
 class Bookmarks extends React.Component {
   static contextType = BookmarksContext;
@@ -16,8 +17,8 @@ class Bookmarks extends React.Component {
     });
   };
 
-  renderBookmarks = () => {
-    return this.context.bookmarks.map((bookmark, index) => {
+  renderBookmarks = (bookmarks) => {
+    return bookmarks.map((bookmark, index) => {
       return (
         <div key={index} className="bookmark">
           <h3>{bookmark.title}</h3>
@@ -39,7 +40,10 @@ class Bookmarks extends React.Component {
   };
 
   render() {
-    return <div>{this.renderBookmarks()}</div>;
+    const { bookmarks } = this.context
+    return bookmarks.length === 0 ? (
+      <NoBookMarks />
+    ) : this.renderBookmarks(bookmarks)
   }
 }
 

@@ -1,18 +1,49 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
-import { BookmarksContext } from "../store/bookmarks-context";
+import { BookmarksContext } from '../context/bookmarks-context'
 
 class ProtectedRoute extends React.Component {
-  static contextType = BookmarksContext;
+  static contextType = BookmarksContext
+  state = {
+    auth: false,
+    loading: true,
+  };
+
+  getBookmarks = async () => {
+    return await fetch(
+      `${process.env.REACT_APP_BACKEND_URL}/bookmarks`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+  }
+
+  checkStatusCode = (response) => {
+    if (response.status >= 400) {
+      throw new Error("not authorized");
+    }
+  }
+
+  setTokenAndDispatch = async (response) => {
+    const { jwt, bookmarks, current_user: currentUser } = await response.json() 
+    localStorage.setItem("token", jwt);
+    this.context.dispatch("populate", { bookmarks, currentUser })
+  }
+
+  setAuth = () => this.setState({ auth: true, loading: false })
+
+  setLoading = () => this.setLoading({ loading: false })
 
   async componentDidMount() {
-    if (!this.context.auth) return;
     try {
-      const response = await this.fetchBookmarks();
-      this.handleError(response.status);
-      this.setTokenAndPopulateBookmarksContext(response);
-    } catch (err) {
-      this.context.dispatch();
+      const response = await this.getBookmarks()
+      this.checkStatusCode(response)
+      await this.setTokenAndDispatch(response)
+      this.setAuth()
+    } catch(err) {
+      this.setLoading()
     }
   }
 

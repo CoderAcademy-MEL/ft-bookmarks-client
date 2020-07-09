@@ -1,0 +1,23 @@
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+form label {
+  margin: 10px 0px;
+}
+
+form input {
+  height: 30px;
+  font-size: 20px;
+}
+
+form input[type=submit] {
+  margin: 20px 0px;
+}
+
+form textarea {
+  resize: none;
+  height: 100px;
+  font-size: 20px;
+}
