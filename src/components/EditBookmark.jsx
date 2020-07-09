@@ -1,12 +1,14 @@
 import React from "react";
+import { BookmarksContext } from '../context/bookmarks-context'
 
 class EditBookmark extends React.Component {
+  static contextType = BookmarksContext
   state = {
     title: "",
     url: "",
     description: "",
     loading: true,
-    id: this.props.match.params.id,
+    id: Number(this.props.match.params.id),
   };
 
   onInputChange = (event) => {
@@ -18,8 +20,17 @@ class EditBookmark extends React.Component {
 
   onFormSubmit = async (event) => {
     event.preventDefault();
-    const { id, title, url, description } = this.state;
-    await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
+    const { id, title, url, description, created_at, user_id } = this.state;
+    this.context.dispatch("update", {
+      title,
+      url,
+      description,
+      id,
+      created_at,
+      user_id,
+      updated_at: new Date(),
+    });
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -30,22 +41,18 @@ class EditBookmark extends React.Component {
     this.props.history.push("/bookmarks");
   };
 
-  async componentDidMount() {
-    const { id } = this.state;
-    const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      }
-    });
-    const { title, url, description } = await response.json();
-    this.setState({ title, url, description, loading: false });
+  componentDidMount() {
+    const foundBookmark = this.context.bookmarks.find((bookmark) => {
+      return bookmark.id === this.state.id
+    })
+    this.setState({ ...foundBookmark, loading: false });
   }
 
   render() {
     const { title, url, description, loading } = this.state;
     return (
       !loading && (
-        <div className="container">
+        <>
           <h1>Edit a bookmark</h1>
           <form onSubmit={this.onFormSubmit}>
             <label htmlFor="title">Title</label>
@@ -73,7 +80,7 @@ class EditBookmark extends React.Component {
             ></textarea>
             <input type="submit" value="Submit" />
           </form>
-        </div>
+        </>
       )
     );
   }
