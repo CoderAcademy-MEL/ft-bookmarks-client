@@ -38,6 +38,7 @@ class EditBookmark extends React.Component {
       },
       body: JSON.stringify({ bookmark: { title, url, description } }),
     });
+    this.props.history.push("/bookmarks")
   };
 
   componentDidMount() {
