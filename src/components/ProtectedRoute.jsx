@@ -27,7 +27,7 @@ class ProtectedRoute extends React.Component {
   setTokenAndDispatch = async (response) => {
     const { jwt, bookmarks, current_user: currentUser } = await response.json();
     localStorage.setItem("token", jwt);
-    localStorage.setItem("auth", true);
+    sessionStorage.setItem("auth", true);
     this.context.dispatch("populate", { bookmarks, currentUser });
   };
 

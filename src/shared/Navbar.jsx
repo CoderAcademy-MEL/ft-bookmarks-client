@@ -9,7 +9,7 @@ class NavBar extends React.Component {
   render() {
     return (
       <nav>
-        {this.context.currentUser || localStorage.getItem("auth") ? (
+        {this.context.currentUser || sessionStorage.getItem("auth") ? (
           <LoggedInNavbar history={this.props.history} context={this.context} />
         ) : (
           <LoggedOutNavbar />
