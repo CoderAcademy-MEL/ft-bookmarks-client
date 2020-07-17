@@ -1,5 +1,6 @@
 import React from "react";
 import { BookmarksContext } from "../context/bookmarks-context";
+import axios from "axios";
 
 class Login extends React.Component {
   static contextType = BookmarksContext;
@@ -15,30 +16,18 @@ class Login extends React.Component {
   onFormSubmit = async (event) => {
     event.preventDefault();
     const { email, password } = this.state;
-    const body = {
-      auth: { email, password },
-    };
     try {
-      const response = await fetch(
+      const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/login`,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
+          auth: { email, password }
         }
       );
-      if (response.status >= 400) {
-        throw new Error("Incorrect credentials");
-      } else {
-        const { jwt } = await response.json();
-        localStorage.setItem("token", jwt);
-        this.props.history.push("/bookmarks");
-      }
+      localStorage.setItem("token", response.data.jwt);
+      this.props.history.push("/bookmarks");
     } catch (err) {
       this.setState({
-        errMessage: err.message,
+        errMessage: "Incorrect credentials",
       });
     }
   };
@@ -48,7 +37,7 @@ class Login extends React.Component {
     return (
       <>
         <h1>Login</h1>
-        {errMessage && <span style={{ color: "red" }}>{errMessage}</span>}
+        {errMessage && <span data-testid="login-error" style={{ color: "red" }}>{errMessage}</span>}
         <form onSubmit={this.onFormSubmit}>
           <label htmlFor="email">Email</label>
           <input
@@ -57,6 +46,7 @@ class Login extends React.Component {
             id="email"
             value={email}
             onChange={this.onInputChange}
+            data-testid="email"
           />
           <label htmlFor="password">Password</label>
           <input

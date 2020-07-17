@@ -30,3 +30,7 @@ yarn-error.log*
 
 netlify.toml
 .netlify
+
+# cypress
+cypress/videos
+cypress/screenshots

@@ -6,6 +6,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
     "moment": "^2.27.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
@@ -20,8 +21,8 @@
     "cypress": "cypress open",
     "eject": "react-scripts eject",
     "deploy": "yarn build && netlify deploy --prod --dir=build",
-    "e2e": "start-server-and-test 'BROWSER=none yarn start' http://localhost:8080 'yarn cypress'",
-    "record": "cypress run --record --key 17650d04-5459-4731-80b8-3763829a810d"
+    "cypress": "cypress open",
+    "e2e": "start-server-and-test 'BROWSER=none yarn start' http://localhost:8080 'yarn cypress'"
   },
   "eslintConfig": {
     "extends": "react-app"
