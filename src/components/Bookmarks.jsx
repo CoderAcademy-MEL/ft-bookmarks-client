@@ -29,6 +29,7 @@ class Bookmarks extends React.Component {
             </a>
           </span>
           <p>{moment(bookmark.updated_at).startOf('minute').fromNow()}</p>
+          <img src={bookmark.image} alt={bookmark.title} />
           <div className="edit-delete-container">
             <Link to={`/bookmarks/${bookmark.id}/edit`}>Edit</Link>
             <span onClick={() => this.deleteBookmark(bookmark.id)}>Delete</span>
