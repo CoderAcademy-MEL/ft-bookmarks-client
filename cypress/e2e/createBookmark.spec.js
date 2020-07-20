@@ -5,7 +5,7 @@ describe("when adding text to make a new bookmark user", () => {
     cy.getUser().then((user) => {
       cy.login(user.email, user.password)
       const { title, url, description } = bookmarkBuilder()
-      cy.visit("/bookmarks/create");
+      cy.visit("/bookmarks/new");
       cy.typeInBookmarkDetails(title, url, description)
       cy.get('form').submit()
       .url()

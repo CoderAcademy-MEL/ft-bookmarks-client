@@ -24,7 +24,7 @@ class App extends React.Component {
         <SiteLayout>
           <Switch>
             <ProtectedRoute exact path="/bookmarks/:id/edit" component={EditBookmark} />
-            <ProtectedRoute exact path="/bookmarks/create" component={CreateBookmark} />
+            <ProtectedRoute exact path="/bookmarks/new" component={CreateBookmark} />
             <ProtectedRoute exact path="/bookmarks" component={Bookmarks} />
             <ProtectedRoute exact path="/profile" component={Profile} />
             <Route exact path="/login" component={Login} />

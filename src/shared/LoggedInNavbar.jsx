@@ -17,7 +17,7 @@ const LoggedInNavbar = (props) => (
         </span>
       </Link>
       <Link to="/bookmarks">Bookmarks</Link>
-      <Link to="/bookmarks/create">Create Bookmark</Link>
+      <Link to="/bookmarks/new">Create Bookmark</Link>
     </div>
     <div className="welcome-user">
       <span id="logout" onClick={() => handleLogout(props)}>
