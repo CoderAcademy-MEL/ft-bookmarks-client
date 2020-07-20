@@ -18,10 +18,7 @@ class CreateBookmark extends React.Component {
 
   onFormSubmit = async (event) => {
     event.preventDefault();
-    // const body = {
-    //   bookmark: this.state,
-    // };
-    var data = new FormData()
+    const data = new FormData()
     for (let key in this.state) {
       data.append(`bookmark[${key}]`, this.state[key])
     }
