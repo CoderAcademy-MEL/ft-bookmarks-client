@@ -9,18 +9,37 @@ class EditBookmark extends React.Component {
     description: "",
     loading: true,
     id: Number(this.props.match.params.id),
+    image: ''
   };
 
   onInputChange = (event) => {
     const key = event.target.id;
-    this.setState({
-      [key]: event.target.value,
-    });
+    if (event.target?.files) {
+      this.setState({
+        uploadedImage: event.target.files[0]
+      })
+    } else {
+      this.setState({
+        [key]: event.target.value,
+      });
+    }
   };
 
   onFormSubmit = async (event) => {
     event.preventDefault();
-    const { id, title, url, description, created_at, user_id } = this.state;
+    let { id, title, url, description, created_at, user_id, image, uploadedImage } = this.state;
+    if (uploadedImage) {
+      const data = new FormData();
+      data.append('bookmark[image]', uploadedImage)
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/image/${id}`, {
+        method: "PUT",
+        body: data,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        }
+      })
+      image = await response.text()
+    }
     this.context.dispatch("update", {
       title,
       url,
@@ -29,6 +48,7 @@ class EditBookmark extends React.Component {
       created_at,
       user_id,
       updated_at: new Date(),
+      image
     });
     fetch(`${process.env.REACT_APP_BACKEND_URL}/bookmarks/${id}`, {
       method: "PUT",
@@ -54,7 +74,7 @@ class EditBookmark extends React.Component {
       !loading && (
         <>
           <h1>Edit a bookmark</h1>
-          <form onSubmit={this.onFormSubmit}>
+          <form onSubmit={this.onFormSubmit} encType="multipart/form-data">
             <label htmlFor="title">Title</label>
             <input
               type="text"
@@ -78,6 +98,13 @@ class EditBookmark extends React.Component {
               onChange={this.onInputChange}
               value={description}
             ></textarea>
+            <label htmlFor="image">Image</label>
+            <input
+              type="file"
+              name="image"
+              id="image"
+              onChange={this.onInputChange}
+            />
             <input type="submit" value="Submit" />
           </form>
         </>
